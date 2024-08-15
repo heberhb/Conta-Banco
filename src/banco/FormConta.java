@@ -160,7 +160,6 @@ public class FormConta extends javax.swing.JFrame {
                 FormConta inicio = new FormConta();
                 inicio.setVisible(true);
                 inicio.setLocationRelativeTo(null);
-                inicio.setDefaultCloseOperation(HIDE_ON_CLOSE);
                 inicio.pack();
                 inicio.setResizable(true);
             }
