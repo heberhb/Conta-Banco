@@ -1,8 +1,9 @@
-package com.ClassesDao;
+package controll.ClassesDao;
 
 
-import com.Classes.Usuarios;
-import com.Conta.ConexaoBD.ConexaoJDBC;
+import Model.Classes.Usuarios;
+import Model.Classes.ConexaoJDBC;
+import Model.Classes.Conta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,5 +38,21 @@ public class UsuarioDAO {
             System.out.println("Usuario não encontrado");
         }
         return 0;
+    }
+    
+    public void CadastrarUsuario(Usuarios usuario,Conta conta){
+        String sql = "INSERT INTO usuario (Nome,Cpf,Telefone,idConta) VALUES(?,?,?,?)";
+        try{
+            ps = this.conn.prepareStatement(sql);
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getCpf());
+            ps.setString(3, usuario.getTelefone());
+            ps.setInt(4, conta.getId());
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 }

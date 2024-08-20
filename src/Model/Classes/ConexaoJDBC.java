@@ -1,4 +1,4 @@
-package com.Conta.ConexaoBD;
+package Model.Classes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
     public class ConexaoJDBC {
         
-           private final String url = "jdbc:mysql://LocalHost:3306/Depesas";
+           private final String url = "jdbc:mysql://LocalHost:3306/banco";
            private final  String user = "root";
            private final  String Senha = "19101992";
            Connection conn;

@@ -2,10 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package banco;
+package View.banco;
 
-import com.Classes.Conta;
-import com.ClassesDao.ContaDAO;
+import Model.Classes.Conta;
+import Model.Classes.Usuarios;
+import controll.ClassesDao.ContaDAO;
+import controll.ClassesDao.UsuarioDAO;
 import java.util.List;
 
 /**
@@ -32,6 +34,7 @@ public class FormConta extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        JlId = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -45,6 +48,10 @@ public class FormConta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        JlId.setBackground(new java.awt.Color(153, 204, 0));
+        JlId.setForeground(new java.awt.Color(255, 51, 0));
+        JlId.setText("Id :");
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Criando Conta");
 
@@ -55,6 +62,11 @@ public class FormConta extends javax.swing.JFrame {
         jLabel4.setText("Telefone:");
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Conta:");
 
@@ -77,9 +89,12 @@ public class FormConta extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(CbConta, javax.swing.GroupLayout.Alignment.LEADING, 0, 192, Short.MAX_VALUE)
-                        .addComponent(txtTelefone, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(CbConta, javax.swing.GroupLayout.Alignment.LEADING, 0, 192, Short.MAX_VALUE)
+                            .addComponent(txtTelefone, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JlId)))
                 .addContainerGap(81, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -104,9 +119,11 @@ public class FormConta extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CbConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(CbConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
+                    .addComponent(JlId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(btnSalvar)
                 .addGap(32, 32, 32))
@@ -125,6 +142,26 @@ public class FormConta extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        ContaDAO contadao = new ContaDAO();
+        String banco = CbConta.getSelectedItem().toString();
+        Conta conta = contadao.BuscarIdConta(banco);
+        
+        JlId.setText(conta.getBanco());
+        
+        
+        
+        UsuarioDAO Usuariosdao = new UsuarioDAO();
+        Usuarios user = new Usuarios();
+        user.setNome(txtNome.getText());
+        user.setCpf(txtCpf.getText());
+        user.setTelefone(txtTelefone.getText());
+        Usuariosdao.CadastrarUsuario(user, conta);
+        
+       Usuariosdao.CadastrarUsuario(user, conta.getIdConta());
+       
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,18 +204,17 @@ public class FormConta extends javax.swing.JFrame {
     }
     
     public void listaConta(){
-        ContaDAO contadao = new ContaDAO();
+        ContaDAO contadao = new ContaDAO();        
         List<Conta> lista = contadao.ListaConta();
+        
         for(Conta c : lista ){
-            
             CbConta.addItem(c);
         }
-        
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Conta> CbConta;
+    private javax.swing.JLabel JlId;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
